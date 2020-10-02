@@ -3,11 +3,23 @@ package entities;
 
 import java.time.LocalDate;
 import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "coach")
 public class Coach {
-    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "name")
     protected String name;
+    @Column(name = "salary")
     protected int salary;
+    @Column(name = "start_date")
     protected LocalDate start;
 
     public Coach() {
