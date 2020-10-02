@@ -13,7 +13,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
-public class main{
+public class Main{
     public static void main(String[] args) {
         Team PAOK = new Team(); //creates our team
         String myDate = "2017-05-15"; 
