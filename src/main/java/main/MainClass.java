@@ -13,7 +13,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
-public class main {
+public class MainClass {
 
     public static void main(String[] args) {
         CoachDao cd = new CoachDao();
