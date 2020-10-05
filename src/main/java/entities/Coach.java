@@ -1,6 +1,7 @@
 
 package entities;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
 import javax.persistence.Column;
@@ -12,9 +13,13 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "coach")
-public class Coach {
+public class Coach implements Serializable {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+    
     @Column(name = "name")
     protected String name;
     @Column(name = "salary")

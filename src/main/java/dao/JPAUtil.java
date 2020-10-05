@@ -14,7 +14,7 @@ public class JPAUtil<T> {
     protected static EntityManagerFactory getEmf() {
         if (emf == null) {
             System.out.println("*******Opening EntityManagerFactory*********");
-            emf = Persistence.createEntityManagerFactory("salesPU");
+            emf = Persistence.createEntityManagerFactory("BasketPU");
         }
         return emf;
     }

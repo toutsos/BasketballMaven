@@ -1,6 +1,7 @@
 package main;
 
 import dao.CoachDao;
+import dao.JPAUtil;
 import entities.Training;
 import entities.Stadium;
 import entities.Player;
@@ -13,11 +14,17 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
-public class MainClass {
+public class MainClass extends JPAUtil<Object> {
 
     public static void main(String[] args) {
+        
         CoachDao cd = new CoachDao();
-        cd.insertCoach();
+        LocalDate date = LocalDate.now();
+        String dateS = "2020-01-01";
+        LocalDate ld = LocalDate.parse(dateS);
+        
+        Coach newCoach = new Coach("AB", 50000 , ld);
+        cd.save(newCoach);
 
 //        
 //        Team PAOK = new Team(); //creates our team
