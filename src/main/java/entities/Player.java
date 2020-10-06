@@ -11,35 +11,29 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+
+@NamedQueries({
+    @NamedQuery(name = "Player.findAll", query = "SELECT p FROM Player p"),
+    @NamedQuery(name = "Player.findFromName", query = "SELECT p FROM Player p WHERE p.name = :name")
+})
 @Entity
 @Table (name="player")
 public class Player implements Serializable {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    @Column (name="id")
     private int id;
-    
-    @Column 
     public String name;
-    
-    @Column
     public int age;
-    
-    @Column 
     public int phone;
-    
-    @Column
     public int height;
-    
-    @Column
     public double weight;
-    
     @Column (name="trainings_number")
     public double trainings;
-    
     @Transient
     private double totalRank;
     
@@ -63,6 +57,15 @@ public class Player implements Serializable {
     public Player() {
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    
     public String getName() {
         return name;
     }

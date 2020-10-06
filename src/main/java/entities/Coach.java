@@ -9,8 +9,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+
+@NamedQueries({
+    @NamedQuery(name = "Coach.findAll", query = "SELECT p FROM Coach p")})
 @Entity
 @Table(name = "coach")
 public class Coach implements Serializable {
@@ -62,7 +67,7 @@ public class Coach implements Serializable {
 
     @Override
     public String toString() {
-        return "Our coach is: " + name + ", salary: " + salary + ", join at: " + start;
+        return "Coach: " + name + ", salary: " + salary + ", join at: " + start;
     }
     
     

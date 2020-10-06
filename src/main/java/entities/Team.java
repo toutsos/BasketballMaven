@@ -1,5 +1,6 @@
 
 package entities;
+import dao.JPAUtil;
 import dao.PlayerDao;
 import static java.util.Collections.list;
 import java.util.Date;
@@ -73,7 +74,7 @@ public class Team {
     public void showPlayers (){
         PlayerDao pd = new PlayerDao();
         List <Player> ls = new ArrayList<>();
-        ls = pd.findAll();
+        ls = pd.findAllPlayers();
         for(int i=0;i<ls.size();i++){
             System.out.println(ls.get(i).toString());
         }//for

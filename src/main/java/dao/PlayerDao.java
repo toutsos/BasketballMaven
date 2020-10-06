@@ -8,6 +8,8 @@ package dao;
 import java.util.List;
 import entities.Player;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -17,6 +19,21 @@ public class PlayerDao extends JPAUtil<Player> {
     
     public List<Player> findAll(){
         return super.findAll("from basketball.player");
+    }
+    public List<Player> findAllPlayers(){
+        EntityManager em = getEntityManager();
+        TypedQuery query = em.createNamedQuery("Player.findAll", Player.class);
+        List<Player> players = query.getResultList();
+        return players;
+//        return super.findAllPlayers("SELECT a FROM player a");
+    }
+    
+    public Player findPlayerFromName(String name){
+        EntityManager em = getEntityManager();
+        TypedQuery<Player> query = em.createNamedQuery("Player.findFromName", Player.class);
+        query.setParameter("name", name);
+        List<Player> list = query.getResultList();
+        return list.get(0);
     }
     
     public Player find(int id){

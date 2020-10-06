@@ -8,7 +8,6 @@ package dao;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import entities.Coach;
-import java.time.LocalDate;
 import java.util.List;
 /**
  *
@@ -17,7 +16,7 @@ import java.util.List;
 public class CoachDao extends JPAUtil<Coach>{
         
         public List<Coach> findAll(){
-            return super.findAll("from coach");
+            return super.findAll("from Coach");
         }
         public Coach find(int id){
             return super.find(Coach.class, id);
@@ -34,11 +33,19 @@ public class CoachDao extends JPAUtil<Coach>{
         }
         
         public Coach update(Coach c){
-            return super.update(c);
+            Coach oldCoach = findAll().get(0);
+            System.out.println(oldCoach);
+            oldCoach.setName(c.getName());
+            oldCoach.setSalary(c.getSalary());
+            oldCoach.setStart(c.getStart());
+            System.out.println(oldCoach);
+            return super.update(oldCoach);
         }
         
         public void delete (int id){
             super.delete(Coach.class,id);
         }
+        
+        
 
 }//class

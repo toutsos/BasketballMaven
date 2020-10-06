@@ -1,5 +1,6 @@
 package dao;
 
+import entities.Player;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -72,5 +73,13 @@ public class JPAUtil<T> {
         em.getTransaction().commit();
         em.close();
     }
-
+    
+    public List<T> findAllPlayers(String query) {
+        getEntityManager();
+        List<T> list = em.createQuery(query).getResultList();
+        em.close();
+        return  list;
+        
+    }
+    
 }//class
