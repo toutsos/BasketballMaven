@@ -1,8 +1,13 @@
 
 package entities;
+import dao.PlayerDao;
 import static java.util.Collections.list;
 import java.util.Date;
 import java.util.ArrayList;
+import java.util.List;
+
+
+
 public class Team {
     
     protected String name;
@@ -66,8 +71,11 @@ public class Team {
     }//removePlayer
      
     public void showPlayers (){
-        for(int i=0;i<players.size();i++){
-            System.out.println(players.get(i).toString());
+        PlayerDao pd = new PlayerDao();
+        List <Player> ls = new ArrayList<>();
+        ls = pd.findAll();
+        for(int i=0;i<ls.size();i++){
+            System.out.println(ls.get(i).toString());
         }//for
     }//showPlayers
     

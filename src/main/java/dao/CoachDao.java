@@ -23,7 +23,7 @@ public class CoachDao extends JPAUtil<Coach>{
             return super.find(Coach.class, id);
         }
         
-        public Coach getCustomerWithoutClosingEm(int id){
+        public Coach getCoachWithoutClosingEm(int id){
             EntityManager em = getEntityManager();
             Coach t = em.find(Coach.class, id);
             return t;

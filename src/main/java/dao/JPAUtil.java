@@ -1,4 +1,3 @@
-
 package dao;
 
 import java.util.List;
@@ -10,7 +9,7 @@ public class JPAUtil<T> {
 
     private static EntityManagerFactory emf;
     private EntityManager em;
-    
+
     protected static EntityManagerFactory getEmf() {
         if (emf == null) {
             System.out.println("*******Opening EntityManagerFactory*********");
@@ -18,21 +17,21 @@ public class JPAUtil<T> {
         }
         return emf;
     }
-    
+
     public static void closeEntityManagerFactory() {
         System.out.println("*******Closing EntityManagerFactory*********");
         emf.close();
     }
-    
+
     protected EntityManager getEntityManager() {
         em = getEmf().createEntityManager();
         return em;
     }
-    
+
     protected void closeEntityManager() {
         em.close();
     }
-    
+
     protected T save(T t) {
         getEntityManager();
         em.getTransaction().begin();
@@ -41,7 +40,7 @@ public class JPAUtil<T> {
         closeEntityManager();
         return t;
     }
-    
+
     public T update(T t) {
         getEntityManager();
         em.getTransaction().begin();
@@ -50,21 +49,21 @@ public class JPAUtil<T> {
         closeEntityManager();
         return t;
     }
-    
+
     protected T find(Class<T> type, int id) {
         getEntityManager();
         T t = em.find(type, id);
         closeEntityManager();
         return t;
     }
-    
+
     protected List<T> findAll(String query) {
         getEntityManager();
         List<T> list = em.createQuery(query).getResultList();
         closeEntityManager();
         return list;
     }
-    
+
     public void delete(Class<T> type, Object id) {
         getEntityManager();
         em.getTransaction().begin();
@@ -73,7 +72,5 @@ public class JPAUtil<T> {
         em.getTransaction().commit();
         em.close();
     }
-
-
 
 }//class

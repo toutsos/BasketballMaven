@@ -5,17 +5,33 @@
  */
 package entities;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  *
  * @author a.toutsios
  */
-public class Training {
+@Entity
+@Table (name="training")
+public class Training implements Serializable{
+    @Id
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
+            
     ArrayList<Player> playersTraining = new ArrayList<Player>();
     ArrayList<Double> playersRanking = new ArrayList<Double>();
+    
+    @Column(name="datetime")
     LocalDateTime trainingDateTime;
+    
+    @Column (name="trainingstadium")
     protected Stadium trainingStadium;
 
     //Constructors//

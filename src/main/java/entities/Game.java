@@ -1,15 +1,36 @@
 
 package entities;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-public class Game {
+@Entity
+@Table(name="game")
+public class Game implements Serializable {
+    @Id
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @Column
+    private int id;
+    
+    @Column
     public String opponent;
+    
+    @Column (name="datetime")
     public LocalDateTime gameDateTime;
+    
+    
     public ArrayList<String> playersGame = new ArrayList<String>();
     public ArrayList<Integer> playersPoints = new ArrayList<Integer>();
+    
+    @Column (name="gamestadium")
     public Stadium gameStadium;
 
     
