@@ -125,6 +125,8 @@ public class MainClass extends JPAUtil<Object> {
                             break;
                         }//else
                     } catch (Exception e) {
+                        System.out.println("inside try catch coach");
+                                
                     }//TRY-CATCH
 
                 } else if (firstMenuFlag == 3) {
