@@ -239,12 +239,8 @@ public class MainClass extends JPAUtil<Object> {
                     } catch (Exception e) {
                     }//try - catch
                 } else if (firstMenuFlag == 5) {
-                    System.out.println("---------------------------------------");
-                    System.out.println("For stadium information press 1");
-                    System.out.println("To add new stadium press 2");
-                    System.out.println("To delete stadium press 3");
-                    System.out.println("To return press any other key");
-                    System.out.println("---------------------------------------");
+                    showStadiumMenu();
+                    
                     try {
                         Scanner key6 = new Scanner(System.in);
                         int a = key6.nextInt();
@@ -476,5 +472,16 @@ public class MainClass extends JPAUtil<Object> {
         System.out.println("---------------------------------------");
     }
     
+    /**
+     * Prints only Stadium information menu
+     */
+    public static void showStadiumMenu(){
+        System.out.println("---------------------------------------");
+        System.out.println("For stadium information press 1");
+        System.out.println("To add new stadium press 2");
+        System.out.println("To delete stadium press 3");
+        System.out.println("To return press any other key");
+        System.out.println("---------------------------------------");
+    }
     
 }//class
