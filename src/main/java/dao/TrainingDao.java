@@ -8,6 +8,7 @@ package dao;
 import entities.Player;
 import entities.Training;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -42,7 +43,7 @@ public class TrainingDao extends JPAUtil<Training>{
             super.delete(Training.class,id);
         }
         
-        public Training findTrainingFromDate(LocalDate date){
+        public Training findTrainingFromDate(LocalDateTime date){
         EntityManager em = getEntityManager();
         TypedQuery<Training> query = em.createNamedQuery("Training.findFromDate", Training.class);
         query.setParameter("date", date);
