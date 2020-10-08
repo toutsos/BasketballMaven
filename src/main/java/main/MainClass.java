@@ -12,6 +12,7 @@ import entities.Player;
 import entities.Team;
 import entities.Game;
 import entities.Coach;
+import entities.PlayerTraining;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -150,7 +151,7 @@ public class MainClass extends JPAUtil<Object> {
                                     if (playerList.get(j).getName().equals(name)) {
                                         Player player = pd.findPlayerFromName(name);
                                         int playerId = player.getId();
-                    //TODO              PlayerTraining pt=new PlayerTraining();
+                                        PlayerTraining pt=new PlayerTraining(playerId,idTraining,rank);
                     //TODO              pt.save(playerId,idTraining,rank);
                                         player.setTrainings(player.getTrainings()+1);
                                         pd.update(player);
