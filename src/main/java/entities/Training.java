@@ -13,7 +13,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  *
@@ -21,18 +24,27 @@ import javax.persistence.Table;
  */
 @Entity
 @Table (name="training")
+@NamedQueries({
+    @NamedQuery(name = "Training.findAll", query = "SELECT p FROM Training p"),
+})
 public class Training implements Serializable{
+    
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-            
-    ArrayList<Player> playersTraining = new ArrayList<Player>();
-    ArrayList<Double> playersRanking = new ArrayList<Double>();
+    
     
     @Column(name="datetime")
     LocalDateTime trainingDateTime;
     
     @Column (name="trainingstadium")
     protected Stadium trainingStadium;
+     
+    @Transient        
+    ArrayList<Player> playersTraining = new ArrayList<Player>();
+    @Transient
+    ArrayList<Double> playersRanking = new ArrayList<Double>();
+    
+   
 
     //Constructors//
     
@@ -92,5 +104,12 @@ public class Training implements Serializable{
         }
         System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
     }//showTraining
+
+    @Override
+    public String toString() {
+        return "Training{" + "trainingDateTime=" + trainingDateTime + ", trainingStadium=" + trainingStadium + '}';
+    }
+    
+    
    
 }//class

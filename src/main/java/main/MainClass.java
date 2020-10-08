@@ -3,6 +3,7 @@ package main;
 import dao.CoachDao;
 import dao.JPAUtil;
 import dao.PlayerDao;
+import dao.TrainingDao;
 import entities.Training;
 import entities.Stadium;
 import entities.Player;
@@ -109,20 +110,21 @@ public class MainClass extends JPAUtil<Object> {
                     }//try-catch
 
                 } else if (firstMenuFlag == 2) {
-                    System.out.println("---------------------------------------");
-                    System.out.println("For coach history press 1");
-                    System.out.println("To add new coach press 2");
-                    System.out.println("To return press any other key");
-                    System.out.println("---------------------------------------");
-                    int coachMenu = key.nextInt();
                     try {
+                        System.out.println("---------------------------------------");
+                        System.out.println("For coach history press 1");
+                        System.out.println("To add new coach press 2");
+                        System.out.println("To return press any other key");
+                        System.out.println("---------------------------------------");
+                    
+                        int coachMenu = key.nextInt();
                         if (coachMenu == 1) {
                             showAllCoaches();
                         } else if (coachMenu == 2) {
                             createNewCoach(key);
                         } else {
-                            System.out.println("Something went wrong please try again!");
-                            break;
+                            continue;
+                            //break;
                         }//else
                     } catch (Exception e) {
                         System.out.println("inside try catch coach");
@@ -140,7 +142,8 @@ public class MainClass extends JPAUtil<Object> {
                         Scanner key4 = new Scanner(System.in);
                         int trainingMenu = key4.nextInt();
                         if (trainingMenu == 1) {
-                            PAOK.showTrainings();
+                            showAllTrainings();
+//                            PAOK.showTrainings();
                         } else if (trainingMenu == 2) {
                             System.out.println("Give date of training at format yyyy-mm-dd");
                             String dateTraining = key.next(); //string dateTraining
@@ -353,5 +356,16 @@ public class MainClass extends JPAUtil<Object> {
             System.out.println("This players doesnt belong to our team!");
         }
         }
+    /**
+     * Shows all trainings
+     */
+    public static void showAllTrainings(){
+        TrainingDao td = new TrainingDao();
+        List<Training> list = td.findAll() ;
+        for(Training c: list ){
+            System.out.println(c.toString());
+//            c.toString();
+        }
+    }
     
 }//class1

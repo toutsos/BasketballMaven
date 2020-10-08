@@ -15,7 +15,7 @@ import javax.persistence.EntityManager;
 public class TrainingDao extends JPAUtil<Training>{
     
     public List<Training> findAll(){
-            return super.findAll("from coach");
+            return super.findAll("from Training");
         }
         public Training find(int id){
             return super.find(Training.class, id);
