@@ -26,18 +26,20 @@ import javax.persistence.Transient;
 @Table (name="training")
 @NamedQueries({
     @NamedQuery(name = "Training.findAll", query = "SELECT p FROM Training p"),
+    @NamedQuery(name = "Training.findFromDate", query = "SELECT t FROM Training t WHERE t.dame = :date")
 })
 public class Training implements Serializable{
     
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
+    private int id;
     
     
     @Column(name="datetime")
     LocalDateTime trainingDateTime;
     
     @Column (name="trainingstadium")
-    protected Stadium trainingStadium;
+    private Stadium trainingStadium;
      
     @Transient        
     ArrayList<Player> playersTraining = new ArrayList<Player>();
@@ -84,6 +86,24 @@ public class Training implements Serializable{
     public void setPlayersRanking(ArrayList<Double> playersRanking) {
         this.playersRanking = playersRanking;
     }
+    
+     public Stadium getTrainingStadium() {
+        return trainingStadium;
+    }
+
+    public void setTrainingStadium(Stadium trainingStadium) {
+        this.trainingStadium = trainingStadium;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    
   
     //METHODS//
     
@@ -109,7 +129,8 @@ public class Training implements Serializable{
     public String toString() {
         return "Training{" + "trainingDateTime=" + trainingDateTime + ", trainingStadium=" + trainingStadium + '}';
     }
-    
+
+   
     
    
 }//class

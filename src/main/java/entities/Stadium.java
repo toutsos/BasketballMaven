@@ -11,6 +11,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
@@ -19,6 +21,10 @@ import javax.persistence.Table;
  */
 @Entity
 @Table (name="stadium")
+@NamedQueries ({
+    @NamedQuery(name="Stadium.findAll", query = "SELECT s FROM Stadium s"),
+    @NamedQuery(name = "Stadium.findFromName", query = "SELECT s FROM Stadium p WHERE s.name = :name")
+})
 public class Stadium implements Serializable {
     @Id
     @GeneratedValue (strategy =GenerationType.IDENTITY)
@@ -42,5 +48,15 @@ public class Stadium implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    
 
 }

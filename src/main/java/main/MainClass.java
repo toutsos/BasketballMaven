@@ -1,8 +1,10 @@
 package main;
 
 import dao.CoachDao;
+import dao.GameDao;
 import dao.JPAUtil;
 import dao.PlayerDao;
+import dao.StadiumDao;
 import dao.TrainingDao;
 import entities.Training;
 import entities.Stadium;
@@ -33,76 +35,24 @@ public class MainClass extends JPAUtil<Object> {
         try {
             while (firstMenuFlag != 6) { //main screen  
                 System.out.println("---------------------------------------");
-                System.out.println("For team infomation press 1");
-                System.out.println("For coach infomation press 2");
-                System.out.println("For trainings infomations press 3");
-                System.out.println("For games infomations press 4");
-                System.out.println("For stadium infomations press 5");
-                System.out.println("To close programm press 6");
-                System.out.println("---------------------------------------");
+                showFirstMenu();
                 Scanner key = new Scanner(System.in);
-
                 try {
                     firstMenuFlag = key.nextInt();
                 } catch (Exception e) {
                     System.out.println("Only numbers allowed!");
-                }
+                }//catch
 
                 if (firstMenuFlag == 1) {
                     try {
-                        System.out.println("---------------------------------------");
-                        System.out.println("For team roster press 1");
-                        System.out.println("To add player press 2");
-                        System.out.println("To remove player press 3");
-                        System.out.println("Finish press 4");
-                        System.out.println("---------------------------------------");
-
+                        showTeamInformationMenu();
                         int teamInformationMenu = key.nextInt();
                         if (teamInformationMenu == 1) {
-
-                            PlayerDao pd = new PlayerDao();
-                            List<Player> ls = pd.findAllPlayers();
-                            if (ls.size() > 0) {
-                                for (Player p : ls) {
-                                    System.out.println(p);
-                                }
-                            } else {
-                                System.out.println("Our roster is empty!");
-                            }
+                            showAllPlayers();
                         } else if (teamInformationMenu == 2) {
-                            String flag1 = "YES";
-                            while (flag1.equals("YES")) {
-                                System.out.println("Write players information");
-                                String name;
-                                int age;
-                                int phone;
-                                int height;
-                                double weight;
-                                PlayerDao pd = new PlayerDao();
-                                System.out.println("Name:");
-                                key.nextLine();
-                                name = key.nextLine();
-                                System.out.println("Age:");
-                                age = key.nextInt();
-                                System.out.println("Phone number:");
-                                phone = key.nextInt();
-                                System.out.println("Height (cm):");
-                                height = key.nextInt();
-                                System.out.println("Weight(kg):");
-                                weight = key.nextInt();
-                                Player newPlayer = new Player(name, age, phone, height, weight);
-//                        PAOK.addPlayer(newPlayer);
-                                pd.save(newPlayer);
-
-                                System.out.println("Player added! WELCOME TO PAOK!");
-                                System.out.println("---------------------------------------");
-                                System.out.println("Add new player?");
-                                System.out.println("YES or NO");
-                                flag1 = key.next();
-                            }//while 
+                            addNewPlayer(key);
                         } else if (teamInformationMenu == 3) {
-                              playerDelete();
-//                            PAOK.removePlayer(nameRemove);
+                            playerDelete();
                         } else {
                             System.out.println("Press 1 , 2 , 3 or 4");
                         }//else
@@ -111,12 +61,7 @@ public class MainClass extends JPAUtil<Object> {
 
                 } else if (firstMenuFlag == 2) {
                     try {
-                        System.out.println("---------------------------------------");
-                        System.out.println("For coach history press 1");
-                        System.out.println("To add new coach press 2");
-                        System.out.println("To return press any other key");
-                        System.out.println("---------------------------------------");
-                    
+                        showCoachMenu();
                         int coachMenu = key.nextInt();
                         if (coachMenu == 1) {
                             showAllCoaches();
@@ -127,23 +72,15 @@ public class MainClass extends JPAUtil<Object> {
                             //break;
                         }//else
                     } catch (Exception e) {
-                        System.out.println("inside try catch coach");
-                                
                     }//TRY-CATCH
 
                 } else if (firstMenuFlag == 3) {
-                    System.out.println("---------------------------------------");
-                    System.out.println("For trainings information press 1");
-                    System.out.println("To add training press 2");
-                    System.out.println("To return press any other key");
-                    System.out.println("---------------------------------------");
-
+                    showTrainingsMenu();
                     try {
                         Scanner key4 = new Scanner(System.in);
                         int trainingMenu = key4.nextInt();
                         if (trainingMenu == 1) {
                             showAllTrainings();
-//                            PAOK.showTrainings();
                         } else if (trainingMenu == 2) {
                             System.out.println("Give date of training at format yyyy-mm-dd");
                             String dateTraining = key.next(); //string dateTraining
@@ -154,11 +91,51 @@ public class MainClass extends JPAUtil<Object> {
                             LocalTime timeTr = LocalTime.parse(timeTraining, formatterTime);//convert to DateTime
 
                             LocalDateTime dateTimeTraining = LocalDateTime.of(dateTr, timeTr); //create LocalDateTIme stamp
-
-                            System.out.println("Give stadium we will play");
-                            String nameStadium = key.next();
-
-                            Training newTraining = new Training(dateTimeTraining, new Stadium(nameStadium)); //create new training object
+                            TrainingDao td = new TrainingDao();
+                            StadiumDao sd = new StadiumDao();
+                            List<Stadium> allStadium = sd.findAll();
+                            
+                            Boolean flagStadiumExistance = false;
+                            while(flagStadiumExistance==false){
+                                System.out.println("Give stadium we will play");
+                                String nameStadium = key.next();
+                                for (int i=0; i<allStadium.size();i++){
+                                    if (allStadium.get(i).getName().equals(nameStadium)){
+                                            Stadium stadium = sd.findStadiumFromName(nameStadium);
+                                            int idStadium = stadium.getId();
+                                            Training newTraining = new Training(dateTimeTraining,stadium);
+                                            td.save(newTraining);
+                                            int idTraining = newTraining.getId();
+            //TODO                          TrainingStadiumDao.save(idTraining,idStadium)
+                                            flagStadiumExistance=true;
+                                            System.out.println("Training added!");
+                                            continue;
+                                    }//if
+                                }//for
+                                    
+                                    
+                                if(flagStadiumExistance==false){
+                                    System.out.println("This stadium doesnt exist");
+                                    System.out.println("Do you want to add it? (YES or NO)");
+                                    String answer = key.next();
+                                    if(answer.equalsIgnoreCase("yes")){
+                                        Stadium newStadium = new Stadium(nameStadium);
+                                        sd.save(newStadium);
+                                        int idStadium = newStadium.getId();
+                                        Training newTraining = new Training(dateTimeTraining,newStadium);
+                                        int idTraining = newTraining.getId();
+            //TODO                      TrainingStadiumDao.save(idTraining,idStadium)
+                                        flagStadiumExistance=true;
+                                        System.out.println("Training added!");
+                                    }else{
+                                        break;
+                                    }//else
+                                }//if
+                            }//while flagStadiumExistance=false;
+                                
+                            
+                            Training training = td.findTrainingFromDate(dateTimeTraining);
+                            int idTraining = training.getId();
                             String flag3 = "YES"; //flag for add new player
                             while (flag3.equals("YES")) {
                                 System.out.println("Give players name:");
@@ -167,14 +144,16 @@ public class MainClass extends JPAUtil<Object> {
                                 System.out.println("Give players rank:");
                                 double rank = key5.nextDouble();
                                 boolean flag2 = false; //flag to check if player exists in team
-                                for (int j = 0; j < PAOK.players.size(); j++) {
-                                    if (PAOK.players.get(j).getName().equals(name)) {
-                                        Player newPlayer = new Player(name);
-                                        newTraining.addPlayer(newPlayer);
-                                        newTraining.addRank(rank);
-                                        double plus = PAOK.players.get(j).getTrainings();
-                                        PAOK.players.get(j).setTrainings(plus + 1);
-                                        PAOK.players.get(j).setTotalRank(rank);
+                                PlayerDao pd = new PlayerDao();
+                                List<Player> playerList = pd.findAll();
+                                for (int j = 0; j < playerList.size(); j++) {
+                                    if (playerList.get(j).getName().equals(name)) {
+                                        Player player = pd.findPlayerFromName(name);
+                                        int playerId = player.getId();
+                    //TODO              PlayerTraining pt=new PlayerTraining();
+                    //TODO              pt.save(playerId,idTraining,rank);
+                                        player.setTrainings(player.getTrainings()+1);
+                                        pd.update(player);
                                         flag2 = true;
                                     }//if   
                                 }//for
@@ -186,27 +165,20 @@ public class MainClass extends JPAUtil<Object> {
                                 System.out.println("Do you want to add another player? YES or NO");
                                 flag3 = key5.next();
                             }//while
-                            PAOK.trainings.add(newTraining);
-                            System.out.println("---------------------------------------");
-                            System.out.println("Training added!");
-                        } else {
-                            continue;
-                        }//else
+                        }//elseif    
                     } catch (Exception e) {
                     }//try-catch
+                    
+                    
                 } else if (firstMenuFlag == 4) {
-                    System.out.println("---------------------------------------");
-                    System.out.println("For games information press 1");
-                    System.out.println("To add new game press 2");
-                    System.out.println("To complete game press 3");
-                    System.out.println("To return press any other key");
-                    System.out.println("---------------------------------------");
+                    showGameInformationMenu();
+                    
                     try {
 
                         Scanner key5 = new Scanner(System.in);
                         int gameMenu = key5.nextInt();
                         if (gameMenu == 1) {
-                            PAOK.showGames();
+                            showAllGames();
                         } else if (gameMenu == 2) {
                             System.out.println("Give opponent");
                             key.nextLine();
@@ -295,12 +267,16 @@ public class MainClass extends JPAUtil<Object> {
                     System.out.println("---------------------------------------");
                     System.out.println("Wrong number");
                 }//else
-            }//while
+            }//while firstMenu
         } catch (Exception e) {
         }//try-catch
 
     }//main
 
+    
+    /* METHODS*/
+    
+    
     /**
      * Updates if Coach exists, else Insert
      *
@@ -317,7 +293,11 @@ public class MainClass extends JPAUtil<Object> {
         }
 
     }//findAndReplaceCoach
-
+    
+    
+    /**
+     * show all coaches that assigned to our team
+     */
     public static void showAllCoaches(){
         CoachDao cd = new CoachDao();
         List<Coach> list = cd.findAll();
@@ -326,6 +306,10 @@ public class MainClass extends JPAUtil<Object> {
         }
     }
     
+    /**
+     * Create a new Coach
+     * @param key
+     */
     public static void createNewCoach(Scanner key){
         CoachDao cd = new CoachDao();
         System.out.println("Give name");
@@ -342,6 +326,9 @@ public class MainClass extends JPAUtil<Object> {
         System.out.println(coachPaok.toString());
     }
     
+    /**
+     * Delete a player from his name
+     */
     public static void playerDelete(){
         System.out.println("Give player's name to remove");
         Scanner key2 = new Scanner(System.in);
@@ -354,8 +341,9 @@ public class MainClass extends JPAUtil<Object> {
             System.out.println("Player "+nameRemove+" removed from our team!");
         }else{
             System.out.println("This players doesnt belong to our team!");
-        }
-        }
+        }//else
+    }//playerDelete
+    
     /**
      * Shows all trainings
      */
@@ -363,9 +351,130 @@ public class MainClass extends JPAUtil<Object> {
         TrainingDao td = new TrainingDao();
         List<Training> list = td.findAll() ;
         for(Training c: list ){
-            System.out.println(c.toString());
-//            c.toString();
+            System.out.println(c);
+        }//for
+    }//showAllTrainings
+    
+    /**
+     * Shows all games
+     */
+    public static void showAllGames(){
+        GameDao gd = new GameDao();
+        List<Game> list = gd.findAll();
+        System.out.println("Games:");
+        for(Game g: list){
+            System.out.println(g);
+        }//for
+    }//showAllGames
+
+    /**
+     * show all team's players
+     */
+    public static void showAllPlayers(){
+        PlayerDao pd = new PlayerDao();
+        List<Player> ls = pd.findAllPlayers();
+        if (ls.size() > 0) {
+            for (Player p : ls) {
+                System.out.println(p);
+            }
+        } else {
+            System.out.println("Our roster is empty!");
         }
     }
     
-}//class1
+    /**
+     * Creates a new Player for our team
+     * @param key 
+     */
+    public static void addNewPlayer(Scanner key){
+    String flag1 = "YES";
+        while (flag1.equals("YES")) {
+            System.out.println("Write players information");
+            String name;
+            int age;
+            int phone;
+            int height;
+            double weight;
+            PlayerDao pd = new PlayerDao();
+            System.out.println("Name:");
+            key.nextLine();
+            name = key.nextLine();
+            System.out.println("Age:");
+            age = key.nextInt();
+            System.out.println("Phone number:");
+            phone = key.nextInt();
+            System.out.println("Height (cm):");
+            height = key.nextInt();
+            System.out.println("Weight(kg):");
+            weight = key.nextInt();
+            Player newPlayer = new Player(name, age, phone, height, weight);
+            pd.save(newPlayer);
+            System.out.println("Player added! WELCOME TO PAOK!");
+            System.out.println("---------------------------------------");
+            System.out.println("Add new player?");
+            System.out.println("YES or NO");
+            flag1 = key.next();
+        }//while 
+    }
+    
+    /**
+     * Prints only team information menu
+     */
+    public static void showTeamInformationMenu(){
+        System.out.println("---------------------------------------");
+        System.out.println("For team roster press 1");
+        System.out.println("To add player press 2");
+        System.out.println("To remove player press 3");
+        System.out.println("Finish press 4");
+        System.out.println("---------------------------------------");
+    }
+    
+    /**
+     * Prints only first menu
+     */
+    public static void showFirstMenu(){
+        System.out.println("For team infomation press 1");
+        System.out.println("For coach infomation press 2");
+        System.out.println("For trainings infomations press 3");
+        System.out.println("For games infomations press 4");
+        System.out.println("For stadium infomations press 5");
+        System.out.println("To close programm press 6");
+        System.out.println("---------------------------------------");
+    }
+    
+    /**
+     * Prints only coach information menu
+     */
+    public static void showCoachMenu(){
+        System.out.println("---------------------------------------");
+        System.out.println("For coach history press 1");
+        System.out.println("To add new coach press 2");
+        System.out.println("To return press any other key");
+        System.out.println("---------------------------------------");
+    }
+    
+    /**
+     * Prints only team's trainings menu
+     */
+    public static void showTrainingsMenu(){
+        System.out.println("---------------------------------------");
+        System.out.println("For trainings information press 1");
+        System.out.println("To add training press 2");
+        System.out.println("To return press any other key");
+        System.out.println("---------------------------------------");
+    }
+    
+    /**
+     * Prints only team's games menu
+     */
+    public static void showGameInformationMenu(){
+        System.out.println("---------------------------------------");
+        System.out.println("For games information press 1");
+        System.out.println("To add new game press 2");
+        System.out.println("To complete game press 3");
+        System.out.println("To return press any other key");
+        System.out.println("---------------------------------------");
+    }
+    
+    
+}//class

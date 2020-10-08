@@ -5,9 +5,11 @@
  */
 package dao;
 
+import entities.Player;
 import entities.Stadium;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 /**
  *
  * @author a.toutsios
@@ -39,4 +41,12 @@ public class StadiumDao extends JPAUtil<Stadium> {
             super.delete(Stadium.class,id);
         }
     
+        public Stadium findStadiumFromName(String name){
+            EntityManager em = getEntityManager();
+            TypedQuery<Stadium> query = em.createNamedQuery("Stadium.findFromName", Stadium.class);
+            query.setParameter("name", name);
+            List<Stadium> list = query.getResultList();
+            return list.get(0);
+        }
+        
 }

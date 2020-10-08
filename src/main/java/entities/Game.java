@@ -107,6 +107,12 @@ public class Game implements Serializable {
         return newDate;
     }//getDate
 
+    @Override
+    public String toString() {
+        return "Opponent=" + opponent + ", Date: " + gameDateTime + ", Stadium= " + gameStadium + '}';
+    }
+
+    
 
 
 }//class

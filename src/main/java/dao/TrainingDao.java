@@ -5,9 +5,12 @@
  */
 package dao;
 
+import entities.Player;
 import entities.Training;
+import java.time.LocalDate;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 /**
  *
  * @author a.toutsios
@@ -38,5 +41,13 @@ public class TrainingDao extends JPAUtil<Training>{
         public void delete (int id){
             super.delete(Training.class,id);
         }
+        
+        public Training findTrainingFromDate(LocalDate date){
+        EntityManager em = getEntityManager();
+        TypedQuery<Training> query = em.createNamedQuery("Training.findFromDate", Training.class);
+        query.setParameter("date", date);
+        List<Training> list = query.getResultList();
+        return list.get(0);
+    }
     
 }//class
