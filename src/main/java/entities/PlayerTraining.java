@@ -9,6 +9,7 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -21,35 +22,21 @@ public class PlayerTraining implements Serializable{
     
     
     @Column(name = "idplayer")
-    @Id private int playerId;
+    @ManyToOne
+    @Id private Player playerId;
     
     @Column(name = "idtraining")
+    @ManyToOne
     @Id private int trainingId;
     
     @Column (name="playerrank")
-    private int rank;
+    private double rank;
 
-    //CONSTRUCTOR
-    public PlayerTraining(int playerId, int trainingId, int rank) {
-        this.playerId = playerId;
-        this.trainingId = trainingId;
-        this.rank = rank;
-    }
-    
-    //GETTERS-SETTERS
-    public int getRank() {
-        return rank;
-    }
-
-    public void setRank(int rank) {
-        this.rank = rank;
-    }
-
-    public int getPlayerId() {
+    public Player getPlayerId() {
         return playerId;
     }
 
-    public void setPlayerId(int playerId) {
+    public void setPlayerId(Player playerId) {
         this.playerId = playerId;
     }
 
@@ -60,6 +47,20 @@ public class PlayerTraining implements Serializable{
     public void setTrainingId(int trainingId) {
         this.trainingId = trainingId;
     }
-    
+
+    public double getRank() {
+        return rank;
+    }
+
+    public void setRank(double rank) {
+        this.rank = rank;
+    }
+
+    public PlayerTraining(Player playerId, int trainingId, double rank) {
+        this.playerId = playerId;
+        this.trainingId = trainingId;
+        this.rank = rank;
+    }
+
     
 }

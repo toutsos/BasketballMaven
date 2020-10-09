@@ -151,7 +151,7 @@ public class MainClass extends JPAUtil<Object> {
                                     if (playerList.get(j).getName().equals(name)) {
                                         Player player = pd.findPlayerFromName(name);
                                         int playerId = player.getId();
-                                        PlayerTraining pt=new PlayerTraining(playerId,idTraining,rank);
+                                        //PlayerTraining pt=new PlayerTraining(playerId,idTraining,rank);
                     //TODO              pt.save(playerId,idTraining,rank);
                                         player.setTrainings(player.getTrainings()+1);
                                         pd.update(player);

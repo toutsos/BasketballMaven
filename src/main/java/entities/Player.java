@@ -6,6 +6,8 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -36,6 +39,9 @@ public class Player implements Serializable {
     public double trainings;
     @Transient
     private double totalRank;
+    @OneToMany(mappedBy = "idplayer")
+        private List<Training> playerTrainings = new ArrayList<Training>();
+    
     
 //    public double MOrank = totalRank/trainings;
     
@@ -123,9 +129,18 @@ public class Player implements Serializable {
         
     }
     
+    
     @Override
     public String toString() {
         return name + ", age: " + age + ", phone: " + phone + ", height: " + height + ", weight: " + weight + ", trainings: " + (int)trainings + ", MO rank: " +(totalRank/trainings);
+    }
+
+    public List<Training> getPlayerTrainings() {
+        return playerTrainings;
+    }
+
+    public void setPlayerTrainings(List<Training> playerTrainings) {
+        this.playerTrainings = playerTrainings;
     }
 
     
