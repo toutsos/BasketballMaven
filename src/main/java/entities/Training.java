@@ -26,7 +26,7 @@ import javax.persistence.Transient;
 @Table (name="training")
 @NamedQueries({
     @NamedQuery(name = "Training.findAll", query = "SELECT p FROM Training p"),
-    @NamedQuery(name = "Training.findFromDate", query = "SELECT t FROM Training t WHERE t.dame = :date")
+    @NamedQuery(name = "Training.findFromDate", query = "SELECT t FROM Training t WHERE t.trainingDateTime = :date")
 })
 public class Training implements Serializable{
     

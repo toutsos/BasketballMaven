@@ -17,7 +17,7 @@ import javax.persistence.TypedQuery;
 public class StadiumDao extends JPAUtil<Stadium> {
     
     public List<Stadium> findAll(){
-            return super.findAll("from coach");
+            return super.findAll("from Stadium");
         }
         public Stadium find(int id){
             return super.find(Stadium.class, id);

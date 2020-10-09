@@ -5,6 +5,7 @@
  */
 package entities;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -16,7 +17,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table (name="playertraining")
-public class PlayerTraining {
+public class PlayerTraining implements Serializable{
     
     
     @Column(name = "idplayer")

@@ -23,7 +23,7 @@ import javax.persistence.Table;
 @Table (name="stadium")
 @NamedQueries ({
     @NamedQuery(name="Stadium.findAll", query = "SELECT s FROM Stadium s"),
-    @NamedQuery(name = "Stadium.findFromName", query = "SELECT s FROM Stadium p WHERE s.name = :name")
+    @NamedQuery(name = "Stadium.findFromName", query = "SELECT s FROM Stadium s WHERE s.name = :name")
 })
 public class Stadium implements Serializable {
     @Id
