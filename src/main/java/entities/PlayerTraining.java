@@ -25,6 +25,7 @@ public class PlayerTraining implements Serializable{
     
     @Column(name = "idtraining")
     @Id private int trainingId;
+    
     @Column (name="playerrank")
     private int rank;
 
