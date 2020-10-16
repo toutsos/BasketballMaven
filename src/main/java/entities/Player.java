@@ -7,7 +7,9 @@ package entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -35,17 +37,16 @@ public class Player implements Serializable {
     public int phone;
     public int height;
     public double weight;
+    
     @Column (name="trainings_number")
     public double trainings;
+    
     @Transient
     private double totalRank;
-    @OneToMany(mappedBy = "idplayer")
-        private List<Training> playerTrainings = new ArrayList<Training>();
     
+    @OneToMany(mappedBy = "playerId")
+        private Set<PlayerTraining> playerTrainings = new HashSet<PlayerTraining>();
     
-//    public double MOrank = totalRank/trainings;
-    
-
     public Player(String name, int age, int phone, int height, double weight) {
         this.name = name;
         this.age = age;
@@ -129,21 +130,16 @@ public class Player implements Serializable {
         
     }
     
-    
     @Override
     public String toString() {
         return name + ", age: " + age + ", phone: " + phone + ", height: " + height + ", weight: " + weight + ", trainings: " + (int)trainings + ", MO rank: " +(totalRank/trainings);
     }
 
-    public List<Training> getPlayerTrainings() {
+    public Set<PlayerTraining> getPlayerTrainings() {
         return playerTrainings;
     }
 
-    public void setPlayerTrainings(List<Training> playerTrainings) {
+    public void setPlayerTrainings(Set<PlayerTraining> playerTrainings) {
         this.playerTrainings = playerTrainings;
-    }
-
-    
-    
-    
+    }    
 }//class

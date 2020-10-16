@@ -6,9 +6,11 @@
 package dao;
 
 import entities.Player;
+import entities.Stadium;
 import entities.Training;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;

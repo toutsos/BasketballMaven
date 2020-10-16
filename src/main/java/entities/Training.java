@@ -8,12 +8,17 @@ package entities;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -27,7 +32,7 @@ import javax.persistence.Transient;
 @Entity
 @Table (name="training")
 @NamedQueries({
-    @NamedQuery(name = "Training.findAll", query = "SELECT p FROM Training p"),
+    @NamedQuery(name = "Training.findAll", query = "SELECT t FROM Training t"),
     @NamedQuery(name = "Training.findFromDate", query = "SELECT t FROM Training t WHERE t.trainingDateTime = :date")
 })
 public class Training implements Serializable{
@@ -36,14 +41,14 @@ public class Training implements Serializable{
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private int id;
     
-    @OneToMany(mappedBy = "idtraining")
-        private List<Player> trainingPlayers = new ArrayList<Player>();
+    @OneToMany(mappedBy = "trainingId")
+        private Set<PlayerTraining> trainingPlayers = new HashSet<PlayerTraining>();
     
     
-    @Column(name="datetime")
+    @Column(name="DateTimeTraining")
     LocalDateTime trainingDateTime;
     
-    @Column (name="trainingstadium")
+    @ManyToOne
     private Stadium trainingStadium;
      
     @Transient        
@@ -51,7 +56,6 @@ public class Training implements Serializable{
     @Transient
     ArrayList<Double> playersRanking = new ArrayList<Double>();
     
-   
 
     //Constructors//
     
@@ -76,13 +80,6 @@ public class Training implements Serializable{
         this.trainingDateTime = trainingDateTime;
     }
     
-    public ArrayList<Player> getPlayersTraining() {
-        return playersTraining;
-    }
-
-    public void setPlayersTraining(ArrayList<Player> playersTraining) {
-        this.playersTraining = playersTraining;
-    }
 
     public ArrayList<Double> getPlayersRanking() {
         return playersRanking;
@@ -107,7 +104,23 @@ public class Training implements Serializable{
     public void setId(int id) {
         this.id = id;
     }
+
+    public Set<PlayerTraining> getTrainingPlayers() {
+        return trainingPlayers;
+    }
+
+    public void setTrainingPlayers(Set<PlayerTraining> trainingPlayers) {
+        this.trainingPlayers = trainingPlayers;
+    }
     
+        public ArrayList<Player> getPlayersTraining() {
+        return playersTraining;
+    }
+
+    public void setPlayersTraining(ArrayList<Player> playersTraining) {
+        this.playersTraining = playersTraining;
+    }
+
     
   
     //METHODS//
@@ -132,8 +145,9 @@ public class Training implements Serializable{
 
     @Override
     public String toString() {
-        return "Training{" + "trainingDateTime=" + trainingDateTime + ", trainingStadium=" + trainingStadium + '}';
+        return "Training{" + "Date/Time: " + trainingDateTime + ", Stadium: " + trainingStadium + '}';
     }
+
 
    
     

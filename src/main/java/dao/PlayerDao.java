@@ -7,9 +7,11 @@ package dao;
 
 import java.util.List;
 import entities.Player;
+import entities.PlayerTraining;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import org.hibernate.Session;
 
 /**
  *
@@ -20,12 +22,12 @@ public class PlayerDao extends JPAUtil<Player> {
     public List<Player> findAll(){
         return super.findAll("from basketball.player");
     }
+    
     public List<Player> findAllPlayers(){
         EntityManager em = getEntityManager();
         TypedQuery query = em.createNamedQuery("Player.findAll", Player.class);
         List<Player> players = query.getResultList();
         return players;
-//        return super.findAllPlayers("SELECT a FROM player a");
     }
     
     public Player findPlayerFromName(String name){
@@ -50,8 +52,23 @@ public class PlayerDao extends JPAUtil<Player> {
         return super.save(c);
     }
     
-    public Player update(Player c){
-        return super.update(c);
+    public Player updateTrainings(Player c){
+        EntityManager em = getEmf().createEntityManager();
+        em.getTransaction().begin();
+        c.setTrainings(c.getTrainings()+1);
+        em.getTransaction().commit();
+        closeEntityManager();
+        return c;
+    }
+    
+    public void updateTraining(Player c){
+        EntityManager em = getEmf().createEntityManager();
+        em.getTransaction().begin();
+        Player old = find(c.getId());
+        old.trainings++;
+        old.setPlayerTrainings(c.getPlayerTrainings());
+        em.getTransaction().commit();
+        closeEntityManager();
     }
 
     public void delete (int id){

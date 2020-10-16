@@ -5,12 +5,18 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import org.hibernate.annotations.ManyToAny;
 
 @Entity
 @Table(name="game")
@@ -30,9 +36,13 @@ public class Game implements Serializable {
     public ArrayList<String> playersGame = new ArrayList<String>();
     public ArrayList<Integer> playersPoints = new ArrayList<Integer>();
     
-    @Column (name="gamestadium")
+    @ManyToOne
+//    @JoinTable(
+//            name = "game",
+//            joinColumns = { @JoinColumn(name="gamestadium")}
+//            )
     public Stadium gameStadium;
-
+    
     
         //CONSTRUCTOR//
     public Game(String opponent, LocalDateTime gameDateTime, Stadium stadium) {

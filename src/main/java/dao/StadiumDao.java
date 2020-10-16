@@ -5,8 +5,8 @@
  */
 package dao;
 
-import entities.Player;
 import entities.Stadium;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -17,10 +17,18 @@ import javax.persistence.TypedQuery;
 public class StadiumDao extends JPAUtil<Stadium> {
     
     public List<Stadium> findAll(){
-            return super.findAll("from Stadium");
+            return super.findAll("from basketball.stadium");
         }
         public Stadium find(int id){
             return super.find(Stadium.class, id);
+        }
+        
+        public List<Stadium> findAllStadiums(){
+            EntityManager em = getEntityManager();
+            TypedQuery query = em.createNamedQuery("Stadium.findAll", Stadium.class);
+            List<Stadium> list = new ArrayList<>();
+            list = query.getResultList();
+            return list;
         }
         
         public Stadium getStadiumWithoutClosingEm(int id){

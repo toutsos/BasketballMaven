@@ -7,9 +7,13 @@ package entities;
 
 import java.io.Serializable;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.Table;
 
 /**
@@ -20,18 +24,28 @@ import javax.persistence.Table;
 @Table (name="playertraining")
 public class PlayerTraining implements Serializable{
     
+    @EmbeddedId
+    private PlayerTrainingPK id;
     
-    @Column(name = "idplayer")
     @ManyToOne
-    @Id private Player playerId;
-    
-    @Column(name = "idtraining")
+    @MapsId("player_id")
+    @JoinColumn( name="playerId_id")
+    private Player playerId;
+
     @ManyToOne
-    @Id private int trainingId;
+    @MapsId("training_id")
+    @JoinColumn(name="trainingId_id")
+    private Training trainingId;
     
-    @Column (name="playerrank")
+    @Column(name="playerrank")
     private double rank;
 
+     public PlayerTraining(Player player,Training trainingId, double rank) {
+        this.playerId = player;
+        this.trainingId = trainingId;
+        this.rank = rank;
+    }
+    
     public Player getPlayerId() {
         return playerId;
     }
@@ -40,11 +54,11 @@ public class PlayerTraining implements Serializable{
         this.playerId = playerId;
     }
 
-    public int getTrainingId() {
+    public Training getTrainingId() {
         return trainingId;
     }
 
-    public void setTrainingId(int trainingId) {
+    public void setTrainingId(Training trainingId) {
         this.trainingId = trainingId;
     }
 
@@ -56,11 +70,7 @@ public class PlayerTraining implements Serializable{
         this.rank = rank;
     }
 
-    public PlayerTraining(Player playerId, int trainingId, double rank) {
-        this.playerId = playerId;
-        this.trainingId = trainingId;
-        this.rank = rank;
-    }
+   
 
     
 }

@@ -4,6 +4,7 @@ import dao.CoachDao;
 import dao.GameDao;
 import dao.JPAUtil;
 import dao.PlayerDao;
+import dao.PlayerTrainingDao;
 import dao.StadiumDao;
 import dao.TrainingDao;
 import entities.Training;
@@ -17,6 +18,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -27,7 +29,7 @@ public class MainClass extends JPAUtil<Object> {
     static DateTimeFormatter formatterDateTime = DateTimeFormatter.ofPattern("dd-MMM-yyyy HH:mm:ss");
 
     public static void main(String[] args) {
-
+          
         Team PAOK = new Team(); //creates our team
         findAndReplaceCoach(); //creates our first coach!
         System.out.println("Welcome to our team PAOK");
@@ -94,38 +96,45 @@ public class MainClass extends JPAUtil<Object> {
                             LocalDateTime dateTimeTraining = LocalDateTime.of(dateTr, timeTr); //create LocalDateTIme stamp
                             TrainingDao td = new TrainingDao();
                             StadiumDao sd = new StadiumDao();
-                            List<Stadium> allStadium = sd.findAll();
+                            
+                            List<Stadium> allStadium = sd.findAllStadiums();
+                            
+                            //test
+                            System.out.println("Choose a stadium from list below:");
+                            for(int i=0;i<allStadium.size();i++){
+                                System.out.println(allStadium.get(i));
+                            }
                             
                             Boolean flagStadiumExistance = false;
                             while(flagStadiumExistance==false){
-                                System.out.println("Give stadium we will play");
+                                System.out.println("Give stadium we will play:");
                                 String nameStadium = key.next();
                                 for (int i=0; i<allStadium.size();i++){
                                     if (allStadium.get(i).getName().equals(nameStadium)){
                                             Stadium stadium = sd.findStadiumFromName(nameStadium);
-                                            int idStadium = stadium.getId();
                                             Training newTraining = new Training(dateTimeTraining,stadium);
                                             td.save(newTraining);
-                                            int idTraining = newTraining.getId();
-            //TODO                          TrainingStadiumDao.save(idTraining,idStadium)
+                                            stadium.getTrainings().add(newTraining);
                                             flagStadiumExistance=true;
                                             System.out.println("Training added!");
                                             continue;
                                     }//if
                                 }//for
                                     
-                                    
                                 if(flagStadiumExistance==false){
                                     System.out.println("This stadium doesnt exist");
                                     System.out.println("Do you want to add it? (YES or NO)");
                                     String answer = key.next();
                                     if(answer.equalsIgnoreCase("yes")){
+                                        
                                         Stadium newStadium = new Stadium(nameStadium);
-                                        sd.save(newStadium);
-                                        int idStadium = newStadium.getId();
+                                        
                                         Training newTraining = new Training(dateTimeTraining,newStadium);
-                                        int idTraining = newTraining.getId();
-            //TODO                      TrainingStadiumDao.save(idTraining,idStadium)
+                                        td.save(newTraining);
+                                        
+                                        newStadium.getTrainings().add(newTraining);
+                                        sd.save(newStadium);
+                                        
                                         flagStadiumExistance=true;
                                         System.out.println("Training added!");
                                     }else{
@@ -133,10 +142,8 @@ public class MainClass extends JPAUtil<Object> {
                                     }//else
                                 }//if
                             }//while flagStadiumExistance=false;
-                                
-                            
+                              
                             Training training = td.findTrainingFromDate(dateTimeTraining);
-                            int idTraining = training.getId();
                             String flag3 = "YES"; //flag for add new player
                             while (flag3.equals("YES")) {
                                 System.out.println("Give players name:");
@@ -146,18 +153,21 @@ public class MainClass extends JPAUtil<Object> {
                                 double rank = key5.nextDouble();
                                 boolean flag2 = false; //flag to check if player exists in team
                                 PlayerDao pd = new PlayerDao();
-                                List<Player> playerList = pd.findAll();
-                                for (int j = 0; j < playerList.size(); j++) {
-                                    if (playerList.get(j).getName().equals(name)) {
-                                        Player player = pd.findPlayerFromName(name);
-                                        int playerId = player.getId();
-                                        //PlayerTraining pt=new PlayerTraining(playerId,idTraining,rank);
-                    //TODO              pt.save(playerId,idTraining,rank);
-                                        player.setTrainings(player.getTrainings()+1);
-                                        pd.update(player);
-                                        flag2 = true;
-                                    }//if   
-                                }//for
+                                Player player = pd.findPlayerFromName(name);
+                                if (player != null) {
+                                    
+                                    PlayerTraining playerTraining = new PlayerTraining(player,training,rank);
+                                    //PlayerTrainingDao ptd = new PlayerTrainingDao();
+                                    //ptd.save(playerTraining);
+                                    
+                                    training.getTrainingPlayers().add(playerTraining);
+                                    player.getPlayerTrainings().add(playerTraining);
+                                    System.out.println("---------------1---------------");
+                                    pd.updateTraining(player);
+                                    //td.update(training);
+                                    
+                                    flag2 = true;
+                                }
                                 if (flag2 == false) {
                                     System.out.println("---------------------------------------");
                                     System.out.println("This player does not belong to our team!");
@@ -166,7 +176,7 @@ public class MainClass extends JPAUtil<Object> {
                                 System.out.println("Do you want to add another player? YES or NO");
                                 flag3 = key5.next();
                             }//while
-                        }//elseif    
+                        }//if   
                     } catch (Exception e) {
                     }//try-catch
                     
@@ -240,19 +250,22 @@ public class MainClass extends JPAUtil<Object> {
                     } catch (Exception e) {
                     }//try - catch
                 } else if (firstMenuFlag == 5) {
-                    showStadiumMenu();
                     
+                    StadiumDao sd = new StadiumDao();
+                    showStadiumMenu();
                     try {
                         Scanner key6 = new Scanner(System.in);
-                        int a = key6.nextInt();
-                        if (a == 1) {
-                            PAOK.showStadiums();
+                        int stadiumMenuChoice = key6.nextInt();
+                        if (stadiumMenuChoice == 1) {
+                            showAllStadiums();
                             break;
-                        } else if (a == 2) {
+                        } else if (stadiumMenuChoice == 2) {
                             System.out.println("Give name of the stadium");
                             key.nextLine();
                             String nameOfStadium = key.nextLine();
-                            PAOK.addNewStadium(new Stadium(nameOfStadium));
+                            Stadium newStadium = new Stadium (nameOfStadium);
+                            sd.save(newStadium);
+                            System.out.println("Stadium "+nameOfStadium+" added!");
                         }
                     } catch (Exception e) {
                     }
@@ -379,6 +392,20 @@ public class MainClass extends JPAUtil<Object> {
         }
     }
     
+    public static void showAllStadiums(){
+        StadiumDao sd = new StadiumDao();
+        List<Stadium> ls = new ArrayList<Stadium>();
+        ls = sd.findAllStadiums();
+        if (ls.size() > 0) {
+            for (Stadium p : ls) {
+                System.out.println(p);
+            }
+        } else {
+            System.out.println("We dont have any stadium saved!");
+        }
+    }
+    
+    
     /**
      * Creates a new Player for our team
      * @param key 
@@ -484,5 +511,7 @@ public class MainClass extends JPAUtil<Object> {
         System.out.println("To return press any other key");
         System.out.println("---------------------------------------");
     }
+    
+    
     
 }//class
