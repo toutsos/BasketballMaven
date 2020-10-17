@@ -88,15 +88,15 @@ public class Team {
         trainings.add(x);
     }
    
-    public void showTrainings (){
-        for (int i=0;i<trainings.size();i++){
-           trainings.get(i).showTraining();
-        }
-        if(trainings.size()==0){
-            System.out.println("---------------------------------------");
-            System.out.println("No scheduled trainings!");
-        }//if
-    }//showTrainings
+//    public void showTrainings (){
+//        for (int i=0;i<trainings.size();i++){
+//           trainings.get(i).showTraining();
+//        }
+//        if(trainings.size()==0){
+//            System.out.println("---------------------------------------");
+//            System.out.println("No scheduled trainings!");
+//        }//if
+//    }//showTrainings
     
     public void showGames(){
         for (int i=0;i<games.size();i++){
@@ -125,81 +125,81 @@ public class Team {
     
      
      
-    public void generateStartTen(){
-        for (int i=0;i<players.size();i++){ //make a new Arrays to sort players
-           allPlayersGame.add(players.get(i).getName());
-           allPlayersRanking.add(players.get(i).getTotalRank()/players.get(i).getTrainings());
-           allPlayersTrainings.add(players.get(i).getTrainings());
-        }//for
-       
-        for (int i=0;i<allPlayersTrainings.size()-1;i++){ //sort all players with trainings
-            boolean flag = false;
-            for(int j=0;j<allPlayersTrainings.size()-1-i;j++){
-               if(allPlayersTrainings.get(j)<allPlayersTrainings.get(j+1)){
-                   flag=true;
-                   double temp1 = allPlayersTrainings.get(j);
-                   double temp2 = allPlayersTrainings.get(j+1);
-                   allPlayersTrainings.set(j,temp2);
-                   allPlayersTrainings.set(j+1,temp1);
-                   
-                   String tempName1 = allPlayersGame.get(j);
-                   String tempName2 = allPlayersGame.get(j+1);
-                   allPlayersGame.set(j, tempName2);
-                   allPlayersGame.set(j+1, tempName1);
-                   
-                    double temp3 = allPlayersRanking.get(j);
-                    double temp4 = allPlayersRanking.get(j+1);
-                    allPlayersRanking.set(j,temp4);
-                    allPlayersRanking.set(j+1,temp3);
-               }//if
-           }//for
-       }//for
-       
-       if(allPlayersGame.size()>=10){
-       //sort players with their ranking i<8 because we want to sort only first 10 players!
-            for(int i=0 ; i<9;i++){
-                boolean flag = false; 
-                for(int j=0;j<9-i;j++){
-                    if(allPlayersRanking.get(j)<allPlayersRanking.get(j+1)){
-                        flag= true;
-                        double temp1 = allPlayersRanking.get(j);
-                        double temp2 = allPlayersRanking.get(j+1);
-                        allPlayersRanking.set(j,temp2);
-                        allPlayersRanking.set(j+1,temp1);
-
-                        String tempName1 = allPlayersGame.get(j);
-                        String tempName2 = allPlayersGame.get(j+1);
-                        allPlayersGame.set(j, tempName2);
-                        allPlayersGame.set(j+1, tempName1);
-                    }//if
-                }//for
-            if(flag==false){
-                break;
-            }//if
-            }//for
-       }else{
-            for(int i=0 ; i<allPlayersRanking.size()-1;i++){
-                boolean flag = false; 
-                for(int j=0;j<allPlayersRanking.size()-1-i;j++){
-                    if(allPlayersRanking.get(j)<allPlayersRanking.get(j+1)){
-                        flag= true;
-                        double temp1 = allPlayersRanking.get(j);
-                        double temp2 = allPlayersRanking.get(j+1);
-                        allPlayersRanking.set(j,temp2);
-                        allPlayersRanking.set(j+1,temp1);
-
-                        String tempName1 = allPlayersGame.get(j);
-                        String tempName2 = allPlayersGame.get(j+1);
-                        allPlayersGame.set(j, tempName2);
-                        allPlayersGame.set(j+1, tempName1);
-                    }//if
-                }//for
-            if(flag==false){
-                break;
-            }//if
-            }//for
-       }//else
-    }//generateStartTen
-       
+//    public void generateStartTen(){
+//        for (int i=0;i<players.size();i++){ //make a new Arrays to sort players
+//           allPlayersGame.add(players.get(i).getName());
+//           allPlayersRanking.add(players.get(i).getTotalRank()/players.get(i).getTrainings());
+//           allPlayersTrainings.add(players.get(i).getTrainings());
+//        }//for
+//       
+//        for (int i=0;i<allPlayersTrainings.size()-1;i++){ //sort all players with trainings
+//            boolean flag = false;
+//            for(int j=0;j<allPlayersTrainings.size()-1-i;j++){
+//               if(allPlayersTrainings.get(j)<allPlayersTrainings.get(j+1)){
+//                   flag=true;
+//                   double temp1 = allPlayersTrainings.get(j);
+//                   double temp2 = allPlayersTrainings.get(j+1);
+//                   allPlayersTrainings.set(j,temp2);
+//                   allPlayersTrainings.set(j+1,temp1);
+//                   
+//                   String tempName1 = allPlayersGame.get(j);
+//                   String tempName2 = allPlayersGame.get(j+1);
+//                   allPlayersGame.set(j, tempName2);
+//                   allPlayersGame.set(j+1, tempName1);
+//                   
+//                    double temp3 = allPlayersRanking.get(j);
+//                    double temp4 = allPlayersRanking.get(j+1);
+//                    allPlayersRanking.set(j,temp4);
+//                    allPlayersRanking.set(j+1,temp3);
+//               }//if
+//           }//for
+//       }//for
+//       
+//       if(allPlayersGame.size()>=10){
+//       //sort players with their ranking i<8 because we want to sort only first 10 players!
+//            for(int i=0 ; i<9;i++){
+//                boolean flag = false; 
+//                for(int j=0;j<9-i;j++){
+//                    if(allPlayersRanking.get(j)<allPlayersRanking.get(j+1)){
+//                        flag= true;
+//                        double temp1 = allPlayersRanking.get(j);
+//                        double temp2 = allPlayersRanking.get(j+1);
+//                        allPlayersRanking.set(j,temp2);
+//                        allPlayersRanking.set(j+1,temp1);
+//
+//                        String tempName1 = allPlayersGame.get(j);
+//                        String tempName2 = allPlayersGame.get(j+1);
+//                        allPlayersGame.set(j, tempName2);
+//                        allPlayersGame.set(j+1, tempName1);
+//                    }//if
+//                }//for
+//            if(flag==false){
+//                break;
+//            }//if
+//            }//for
+//       }else{
+//            for(int i=0 ; i<allPlayersRanking.size()-1;i++){
+//                boolean flag = false; 
+//                for(int j=0;j<allPlayersRanking.size()-1-i;j++){
+//                    if(allPlayersRanking.get(j)<allPlayersRanking.get(j+1)){
+//                        flag= true;
+//                        double temp1 = allPlayersRanking.get(j);
+//                        double temp2 = allPlayersRanking.get(j+1);
+//                        allPlayersRanking.set(j,temp2);
+//                        allPlayersRanking.set(j+1,temp1);
+//
+//                        String tempName1 = allPlayersGame.get(j);
+//                        String tempName2 = allPlayersGame.get(j+1);
+//                        allPlayersGame.set(j, tempName2);
+//                        allPlayersGame.set(j+1, tempName1);
+//                    }//if
+//                }//for
+//            if(flag==false){
+//                break;
+//            }//if
+//            }//for
+//       }//else
+//    }//generateStartTen
+//       
      
 }//team

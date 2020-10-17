@@ -6,6 +6,8 @@
 package entities;
 
 import java.io.Serializable;
+import javax.persistence.AssociationOverride;
+import javax.persistence.AssociationOverrides;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -15,62 +17,71 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  *
  * @author atoutsios
  */
 @Entity
-@Table (name="playertraining")
+@Table (name="player_training")
 public class PlayerTraining implements Serializable{
     
-    @EmbeddedId
-    private PlayerTrainingPK id;
+    @Id
+    private int id;
+    
+    @Column (name="playerRank")
+    private int rank;
     
     @ManyToOne
-    @MapsId("player_id")
-    @JoinColumn( name="playerId_id")
-    private Player playerId;
-
-    @ManyToOne
-    @MapsId("training_id")
-    @JoinColumn(name="trainingId_id")
-    private Training trainingId;
+    @JoinColumn(name="playerId")
+    private Player player;
     
-    @Column(name="playerrank")
-    private double rank;
+    @ManyToOne
+    @JoinColumn (name="trainingId")
+    private Training training;
 
-     public PlayerTraining(Player player,Training trainingId, double rank) {
-        this.playerId = player;
-        this.trainingId = trainingId;
+    public PlayerTraining(int rank, Player player, Training training) {
         this.rank = rank;
-    }
-    
-    public Player getPlayerId() {
-        return playerId;
+        this.player = player;
+        this.training = training;
     }
 
-    public void setPlayerId(Player playerId) {
-        this.playerId = playerId;
+    public int getId() {
+        return id;
     }
 
-    public Training getTrainingId() {
-        return trainingId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setTrainingId(Training trainingId) {
-        this.trainingId = trainingId;
-    }
-
-    public double getRank() {
+    public int getRank() {
         return rank;
     }
 
-    public void setRank(double rank) {
+    public void setRank(int rank) {
         this.rank = rank;
     }
 
-   
+    public Player getPlayer() {
+        return player;
+    }
 
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public Training getTraining() {
+        return training;
+    }
+
+    public void setTraining(Training training) {
+        this.training = training;
+    }
+    
+    
+    
+    
+  
     
 }

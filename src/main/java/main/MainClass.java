@@ -144,27 +144,46 @@ public class MainClass extends JPAUtil<Object> {
                             }//while flagStadiumExistance=false;
                               
                             Training training = td.findTrainingFromDate(dateTimeTraining);
+                            Training passTraining = td.getTrainingWithoutClosingEm(training.getId());
                             String flag3 = "YES"; //flag for add new player
+                            PlayerTrainingDao ptd = new PlayerTrainingDao();
                             while (flag3.equals("YES")) {
+                                //Training passTraining = newTraining;
                                 System.out.println("Give players name:");
                                 Scanner key5 = new Scanner(System.in);
                                 String name = key5.nextLine();
                                 System.out.println("Give players rank:");
-                                double rank = key5.nextDouble();
+                                int rank = key5.nextInt();
                                 boolean flag2 = false; //flag to check if player exists in team
                                 PlayerDao pd = new PlayerDao();
-                                Player player = pd.findPlayerFromName(name);
+                                Player player = pd.findPlayerFromName(name); //finds the player from db
+                                Player newPlayer = pd.getPlayerWithoutClosingEm(player.getId()); // i keep transactions for the player open to modify attributes
                                 if (player != null) {
+                                    PlayerTraining playerTraining = new PlayerTraining (rank,newPlayer,passTraining);
+                                    newPlayer.setHeight(500);
+                                    System.out.println("--------------1---------------");
+                                    newPlayer.getTrainings().add(playerTraining);                                   //AYTO DIMIOURGEI TO PROBLIMA why??????
+                                    System.out.println(newPlayer.getTrainings().toString());
                                     
-                                    PlayerTraining playerTraining = new PlayerTraining(player,training,rank);
-                                    //PlayerTrainingDao ptd = new PlayerTrainingDao();
-                                    //ptd.save(playerTraining);
+                                    System.out.println("--------------2---------------");
+                                    newPlayer.setTotalTrainings(newPlayer.getTotalTrainings()+1);
+                                    //System.out.println("--------------3---------------");
+                                    //newPlayer.setTotalRank(newPlayer.getTotalRank()+rank);
+                                    System.out.println("--------------4---------------");
+                                    System.out.println(newPlayer);
+                                    pd.update(newPlayer);
+                                   // pd.updatePlayer(newPlayer);                                                     //WHY??????????????
+                                    System.out.println("--------------5---------------");
+                                    //passTraining.getPlayers().add(playerTraining);
+                                    System.out.println("--------------6---------------");
+                                    td.update(passTraining);
+                                    System.out.println("--------------7---------------");
+                                    ptd.save(playerTraining);
+                                    System.out.println("success");
+                                           
                                     
-                                    training.getTrainingPlayers().add(playerTraining);
-                                    player.getPlayerTrainings().add(playerTraining);
-                                    System.out.println("---------------1---------------");
-                                    pd.updateTraining(player);
-                                    //td.update(training);
+                                    
+                                            
                                     
                                     flag2 = true;
                                 }
@@ -207,7 +226,7 @@ public class MainClass extends JPAUtil<Object> {
                             //We create new game
                             Game newGame = new Game(opponent, newGameLocalDateTime, new Stadium(nameStadium));
                             PAOK.addNewGame(newGame);
-                            PAOK.generateStartTen();
+                            //PAOK.generateStartTen();
                             System.out.println("Players that join team at this game are: ");
                             if (PAOK.allPlayersGame.size() >= 10) {
                                 for (int i = 0; i < 10; i++) {

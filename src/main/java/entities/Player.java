@@ -29,23 +29,29 @@ import javax.persistence.Transient;
 @Entity
 @Table (name="player")
 public class Player implements Serializable {
+    
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private int id;
+    
     public String name;
+    
     public int age;
+    
     public int phone;
+    
     public int height;
+    
     public double weight;
     
     @Column (name="trainings_number")
-    public double trainings;
+    public int totalTrainings;
+    
+    @OneToMany (mappedBy = "player")
+    private Set<PlayerTraining> trainings = new HashSet<>();
     
     @Transient
     private double totalRank;
-    
-    @OneToMany(mappedBy = "playerId")
-        private Set<PlayerTraining> playerTrainings = new HashSet<PlayerTraining>();
     
     public Player(String name, int age, int phone, int height, double weight) {
         this.name = name;
@@ -58,8 +64,6 @@ public class Player implements Serializable {
     public Player(String name) {
         this.name = name;
     }
-    
-    
 
     public Player() {
     }
@@ -113,33 +117,35 @@ public class Player implements Serializable {
         this.weight = weight;
     }
 
-    public double getTrainings() {
+    public int getTotalTrainings() {
+        return totalTrainings;
+    }
+
+    public void setTotalTrainings(int trainings) {
+        this.totalTrainings = trainings;
+    }
+
+    public Set<PlayerTraining> getTrainings() {
         return trainings;
     }
 
-    public void setTrainings(double trainings) {
-        this.trainings = trainings;
+    public void setTrainings(PlayerTraining t) {
+        this.trainings.add(t);
     }
 
     public double getTotalRank() {
         return totalRank;
     }
 
-    public void setTotalRank(double x) {
-        this.totalRank += x;
-        
+    public void setTotalRank(double totalRank) {
+        this.totalRank = totalRank;
     }
+    
+    
     
     @Override
     public String toString() {
-        return name + ", age: " + age + ", phone: " + phone + ", height: " + height + ", weight: " + weight + ", trainings: " + (int)trainings + ", MO rank: " +(totalRank/trainings);
+        return name + ", age: " + age + ", phone: " + phone + ", height: " + height + ", weight: " + weight + ", MO rank: " +(totalRank/totalTrainings);
     }
 
-    public Set<PlayerTraining> getPlayerTrainings() {
-        return playerTrainings;
-    }
-
-    public void setPlayerTrainings(Set<PlayerTraining> playerTrainings) {
-        this.playerTrainings = playerTrainings;
-    }    
 }//class

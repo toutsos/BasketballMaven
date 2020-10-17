@@ -52,24 +52,43 @@ public class PlayerDao extends JPAUtil<Player> {
         return super.save(c);
     }
     
-    public Player updateTrainings(Player c){
-        EntityManager em = getEmf().createEntityManager();
-        em.getTransaction().begin();
-        c.setTrainings(c.getTrainings()+1);
-        em.getTransaction().commit();
-        closeEntityManager();
-        return c;
+    public Player update(Player c){
+        return super.update(c);
     }
     
-    public void updateTraining(Player c){
-        EntityManager em = getEmf().createEntityManager();
-        em.getTransaction().begin();
-        Player old = find(c.getId());
-        old.trainings++;
-        old.setPlayerTrainings(c.getPlayerTrainings());
-        em.getTransaction().commit();
-        closeEntityManager();
+    
+    
+    public void updatePlayer(Player p){
+       EntityManager em = getEntityManager();
+       em.getTransaction().begin();
+       Player old = em.find(Player.class, p.getId());
+       old.setTotalRank(p.getTotalRank());
+       old.setTotalTrainings(p.getTotalTrainings()+1);
+//       old.setTrainings(p.getTrainings());
+       
+       old = em.merge(old);
+       em.getTransaction().commit();
+       em.close();
     }
+    
+//    public Player updateTrainings(Player c){
+//        EntityManager em = getEmf().createEntityManager();
+//        em.getTransaction().begin();
+//        c.setTrainings(c.getTrainings()+1);
+//        em.getTransaction().commit();
+//        closeEntityManager();
+//        return c;
+//    }
+    
+//    public void updateTraining(Player c){
+//        EntityManager em = getEmf().createEntityManager();
+//        em.getTransaction().begin();
+//        Player old = find(c.getId());
+//        old.trainings++;
+//        old.setPlayerTrainings(c.getPlayerTrainings());
+//        em.getTransaction().commit();
+//        closeEntityManager();
+//    }
 
     public void delete (int id){
         super.delete(Player.class,id);
