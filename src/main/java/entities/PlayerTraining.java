@@ -41,6 +41,11 @@ public class PlayerTraining implements Serializable{
     @JoinColumn (name="trainingId")
     private Training training;
 
+    public PlayerTraining() {
+    }
+
+    
+    
     public PlayerTraining(int rank, Player player, Training training) {
         this.rank = rank;
         this.player = player;

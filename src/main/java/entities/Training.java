@@ -101,10 +101,6 @@ public class Training implements Serializable{
     public void setPlayers(Set<PlayerTraining> players) {
         this.players = players;
     }
-
- 
-    
-    
   
     //METHODS//
     

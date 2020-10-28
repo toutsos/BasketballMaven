@@ -56,6 +56,11 @@ public class PlayerDao extends JPAUtil<Player> {
         return super.update(c);
     }
     
+    public String getState(Player p){
+        boolean isManaged = getEntityManager().contains(p);
+        return (isManaged?"Managed":"Detached");//ternary operation
+    }
+    
     
     
     public void updatePlayer(Player p){

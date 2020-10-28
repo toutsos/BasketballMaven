@@ -144,7 +144,7 @@ public class MainClass extends JPAUtil<Object> {
                             }//while flagStadiumExistance=false;
                               
                             Training training = td.findTrainingFromDate(dateTimeTraining);
-                            Training passTraining = td.getTrainingWithoutClosingEm(training.getId());
+//                            Training passTraining = td.getTrainingWithoutClosingEm(training.getId());
                             String flag3 = "YES"; //flag for add new player
                             PlayerTrainingDao ptd = new PlayerTrainingDao();
                             while (flag3.equals("YES")) {
@@ -159,32 +159,32 @@ public class MainClass extends JPAUtil<Object> {
                                 Player player = pd.findPlayerFromName(name); //finds the player from db
                                 Player newPlayer = pd.getPlayerWithoutClosingEm(player.getId()); // i keep transactions for the player open to modify attributes
                                 if (player != null) {
-                                    PlayerTraining playerTraining = new PlayerTraining (rank,newPlayer,passTraining);
-                                    newPlayer.setHeight(500);
+                                    PlayerTraining playerTraining = new PlayerTraining (rank,newPlayer,training);
+                                    
+                                    System.out.println(playerTraining); //for debugging
+                                    System.out.println(newPlayer); //for debugging
+                                    
                                     System.out.println("--------------1---------------");
                                     newPlayer.getTrainings().add(playerTraining);                                   //AYTO DIMIOURGEI TO PROBLIMA why??????
+                                   
+                                    
                                     System.out.println(newPlayer.getTrainings().toString());
                                     
                                     System.out.println("--------------2---------------");
                                     newPlayer.setTotalTrainings(newPlayer.getTotalTrainings()+1);
-                                    //System.out.println("--------------3---------------");
-                                    //newPlayer.setTotalRank(newPlayer.getTotalRank()+rank);
+
                                     System.out.println("--------------4---------------");
                                     System.out.println(newPlayer);
                                     pd.update(newPlayer);
-                                   // pd.updatePlayer(newPlayer);                                                     //WHY??????????????
-                                    System.out.println("--------------5---------------");
-                                    //passTraining.getPlayers().add(playerTraining);
+                                   
                                     System.out.println("--------------6---------------");
-                                    td.update(passTraining);
+                                    //td.update(training);
+                                    
                                     System.out.println("--------------7---------------");
-                                    ptd.save(playerTraining);
+                                    //ptd.save(playerTraining);
+                                    
                                     System.out.println("success");
-                                           
-                                    
-                                    
-                                            
-                                    
+                                      
                                     flag2 = true;
                                 }
                                 if (flag2 == false) {
@@ -197,6 +197,7 @@ public class MainClass extends JPAUtil<Object> {
                             }//while
                         }//if   
                     } catch (Exception e) {
+                        e.printStackTrace();
                     }//try-catch
                     
                     
